@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     for (int i = 0; i < 60; i++)
     {
         int idx = (report.current_minute + 1 + i) % 60;
-        printf("Minute %2d: %4d calls\n", i, report.calls_per_minute[idx]);
+        printf("Minute %d: %d calls\n", i, report.calls_per_minute[idx]);
     }
 
     // Create data file

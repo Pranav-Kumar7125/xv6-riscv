@@ -115,47 +115,38 @@ sys_uptime(void)
   return xticks;
 }
 
-uint64
-sys_23052801(void)
+// In your sys_sc_23052801 implementation (kernel/sysproc.c)
+uint64 sys_23052801(void)
 {
   uint64 addr;
+  argaddr(0, &addr);
 
-  // Correct way to use argaddr()
-  argaddr(0, &addr); // This just retrieves the address, doesn't return success/failure
-
-  struct syscall_report
+  // Initialize if needed
+  if (syscall_stats.startup_time == 0)
   {
-    int calls_per_minute[60];
-    int current_minute;
-    int hourly_average;
-    int hours_tracked;
-  } report;
+    init_syscall_stats();
+  }
 
   acquire(&syscall_stats.lock);
 
-  // Copy per-minute data
+  // Calculate current minute
+  uint64 current_time = r_time();
+  uint64 elapsed_seconds = (current_time - syscall_stats.startup_time) / 1000000;
+  int current_minute = elapsed_seconds / 60;
+
+  // Fill the report
+  struct syscall_report report;
   for (int i = 0; i < 60; i++)
   {
     report.calls_per_minute[i] = syscall_stats.calls_per_minute[i];
   }
-
-  report.current_minute = syscall_stats.last_minute % 60;
-
-  // Calculate hourly average
-  if (syscall_stats.hours_tracked > 0)
-  {
-    report.hourly_average = syscall_stats.calls_this_hour / syscall_stats.hours_tracked;
-  }
-  else
-  {
-    report.hourly_average = 0;
-  }
-
+  report.current_minute = current_minute % 60;
+  report.hourly_average = syscall_stats.hours_tracked > 0 ? syscall_stats.calls_this_hour / syscall_stats.hours_tracked : 0;
   report.hours_tracked = syscall_stats.hours_tracked;
 
   release(&syscall_stats.lock);
 
-  // Copy to user space - this is where we check for errors
+  // Copy to user space
   if (copyout(myproc()->pagetable, addr, (char *)&report, sizeof(report)) < 0)
   {
     return -1;
