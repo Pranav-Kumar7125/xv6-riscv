@@ -36,4 +36,4 @@ entry("getpid");
 entry("sbrk");
 entry("sleep");
 entry("uptime");
-entry("sc_23052801");
+entry("sc_23051847");

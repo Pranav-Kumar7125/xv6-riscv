@@ -115,8 +115,8 @@ sys_uptime(void)
   return xticks;
 }
 
-// In your sys_sc_23052801 implementation (kernel/sysproc.c)
-uint64 sys_23052801(void)
+// In your sys_sc_23051847 implementation (kernel/sysproc.c)
+uint64 sys_23051847(void)
 {
   uint64 addr;
   argaddr(0, &addr);

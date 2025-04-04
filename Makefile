@@ -140,7 +140,7 @@ UPROGS=\
 	$U/_grind\
 	$U/_wc\
 	$U/_zombie\
-	$U/_sc_23052801\
+	$U/_sc_23051847\
 
 EXTRA=\
     user/syscall_report.h\

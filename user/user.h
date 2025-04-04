@@ -23,7 +23,7 @@ int getpid(void);
 char *sbrk(int);
 int sleep(int);
 int uptime(void);
-int sc_23052801(struct syscall_report *);
+int sc_23051847(struct syscall_report *);
 
 // ulib.c
 int stat(const char *, struct stat *);

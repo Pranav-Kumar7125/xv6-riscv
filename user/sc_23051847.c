@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
 {
     struct syscall_report report;
 
-    if (sc_23052801(&report) < 0)
+    if (sc_23051847(&report) < 0)
     {
         printf("System call failed\n");
         exit(1);
